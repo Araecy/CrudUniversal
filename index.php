@@ -1,30 +1,36 @@
 <?php
 
-require_once "./config/config.php";
-require_once "./controllers/recordController.php";
-$types = require "config/types.php";
+require_once "config/config.php";
+require_once "controllers/RecordController.php";
 
-$controller = new RecordController();
-
-$action = $_GET['action'] ?? 'index';
 $type = $_GET['type'] ?? 'book';
+$action = $_GET['action'] ?? 'index';
 
-// validate type
-if (!array_key_exists($type, $types)) {
-    die("Invalid type");
-}
+$controller = new RecordController($pdo);
 
 if ($action === 'index') {
 
-    $controller->index($pdo, $type);
+    $controller->index($type);
 
 } elseif ($action === 'create') {
 
-    $controller->createForm($type, $types);
+    $controller->create();
 
 } elseif ($action === 'store') {
 
-    $controller->store($pdo, $type);
+    $controller->store($type);
+
+} elseif ($action === 'edit') {
+
+    $controller->edit($type);
+
+} elseif ($action === 'update') {
+
+    $controller->update($type);
+
+} elseif ($action === 'delete') {
+
+    $controller->delete($type);
 
 } else {
     echo "404 Not Found";

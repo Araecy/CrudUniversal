@@ -1,35 +1,61 @@
 <?php
 
-require_once "models/create.php";
+require_once "models/Record.php";
 
 class RecordController
 {
-    public function index($pdo, $type)
+    private $model;
+
+    public function __construct($pdo)
     {
-        $stmt = $pdo->prepare("SELECT * FROM records WHERE type = :type");
-        $stmt->execute([':type' => $type]);
+        $this->model = new Record($pdo);
+    }
 
-        $records = $stmt->fetchAll();
-
+    public function index($type)
+    {
+        $records = $this->model->allByType($type);
         require "views/list.php";
     }
 
-    // show create form
-    public function createForm($type, $types)
+    public function create()
     {
         require "views/createForm.php";
     }
 
-    // handle form submit
-    public function store($pdo, $type)
+    public function store($type)
     {
-
-        CreateRecord::create(
-            $pdo,
+        $this->model->create(
             $type,
             $_POST['title'],
             $_POST['content']
         );
+
+        header("Location: index.php?action=index&type=" . $type);
+        exit;
+    }
+
+    public function edit($type)
+    {
+        $record = $this->model->find($_GET['id'], $type);
+        require "views/edit.php";
+    }
+
+    public function update($type)
+    {
+        $this->model->update(
+            $_GET['id'],
+            $type,
+            $_POST['title'],
+            $_POST['content']
+        );
+
+        header("Location: index.php?action=index&type=" . $type);
+        exit;
+    }
+
+    public function delete($type)
+    {
+        $this->model->delete($_GET['id'], $type);
 
         header("Location: index.php?action=index&type=" . $type);
         exit;
