@@ -31,7 +31,7 @@ class RecordController
             $_POST['content']
         );
 
-        header("Location: index.php?action=" . $type);
+        header("Location: index.php?action=index&type=" . $type);
         exit;
     }
 }
