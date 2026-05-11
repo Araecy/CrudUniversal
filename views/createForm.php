@@ -1,5 +1,8 @@
-<h1>Create <?php echo ucfirst($type); ?></h1>
-
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+?>
 <form method="POST" action="index.php?action=store&type=<?php echo $type; ?>">
 
     <label>Type</label>

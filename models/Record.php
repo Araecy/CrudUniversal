@@ -1,4 +1,5 @@
 <?php
+
 class Record
 {
     private $pdo;
@@ -44,17 +45,18 @@ class Record
         ]);
     }
 
-    public function update($id, $type, $title, $content)
+    public function update($id, $type, $newType, $title, $content)
     {
         $stmt = $this->pdo->prepare("
             UPDATE records
-            SET title = :title, content = :content
+            SET type = :newType, title = :title, content = :content
             WHERE id = :id AND type = :type
         ");
 
         $stmt->execute([
             ':id' => $id,
             ':type' => $type,
+            ':newType' => $newType,
             ':title' => $title,
             ':content' => $content
         ]);

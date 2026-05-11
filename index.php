@@ -14,7 +14,7 @@ if ($action === 'index') {
 
 } elseif ($action === 'create') {
 
-    $controller->create();
+    $controller->create($type);
 
 } elseif ($action === 'store') {
 
